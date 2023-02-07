@@ -14,7 +14,7 @@ This is the git hub page for Group 5. Repository used to keep baseline for CS321
 * Nick
 * Shaun
 * Chris
-* {Sorry don't remember this one.} 
+* Baxter 
 
 ---
 ## Technology
