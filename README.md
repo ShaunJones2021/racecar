@@ -64,3 +64,6 @@ THis will be a skeleton structure of the project. please feel free to add and re
   * Host: 192.168.7.2 (may change next class if IP address is assigned dynamically)
   * User: debian
   * Default Password: temppwd
+
+## Libraries
+ * gamepad API (javascript)
