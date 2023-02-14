@@ -22,7 +22,10 @@ This is the git hub page for Group 5. Repository used to keep baseline for CS321
 The technology used in this project consists of the following:
 
 * Front-end:
-  * Javascript
+  * Javascript 
+    *Libraries used:
+        -gamepad API
+    
   * HTML
   * (Maybe add the browser engine)
 * Backend:
@@ -64,6 +67,3 @@ THis will be a skeleton structure of the project. please feel free to add and re
   * Host: 192.168.7.2 (may change next class if IP address is assigned dynamically)
   * User: debian
   * Default Password: temppwd
-
-## Libraries
- * gamepad API (javascript)
