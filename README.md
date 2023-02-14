@@ -25,7 +25,7 @@ The technology used in this project consists of the following:
   * Javascript 
     -gamepad API    
   * HTML
-  * (Maybe add the browser engine)
+  * Live Server
 * Backend:
   * Python
     * version 3.10
