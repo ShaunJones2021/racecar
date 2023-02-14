@@ -23,9 +23,7 @@ The technology used in this project consists of the following:
 
 * Front-end:
   * Javascript 
-    *Libraries used:
-        -gamepad API
-    
+    -gamepad API    
   * HTML
   * (Maybe add the browser engine)
 * Backend:
