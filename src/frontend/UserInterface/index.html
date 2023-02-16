@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beaglebone User Interface</title>
+
+    <style>
+      body {
+        text-align: center;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      /*formats controller image to go in front of screen*/
+      .controller {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /*get rid of janky controller image*/
+
+      /*rectangular guage to track how fast car is accelerating/decelerating*/
+      .acceleration_guage {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+      }
+
+      /*circular guage to representation direction in which car is being steered (compass-like)*/
+      .turn_guage {
+      }
+
+      .image {
+        max-width: 100%;
+        max-height: 100%;
+        user-select: none;
+        height: 360px;
+        width: 480px;
+      }
+    </style>
+    <script src="Beaglebone_Controller.js" defer></script>
+  </head>
+  <body>
+    <canvas id="gaming zone"></canvas>
+
+    <div class="controller">
+      <img
+        height="50px"
+        width="50px;"
+        src="controller.jpeg"
+        alt="A generic
+      controller"
+        class="image"
+        draggable="false"
+      />
+    </div>
+  </body>
+</html>
