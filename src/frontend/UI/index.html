@@ -13,50 +13,32 @@
         padding: 0px;
       }
 
-      /*formats controller image to go in front of screen*/
-      .controller {
+      /*rectangular guage to track how fast car is accelerating/decelerating*/
+      .acceleration_guage {
+        color: black;
+        border: black;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-      }
-
-      /*get rid of janky controller image*/
-
-      /*rectangular guage to track how fast car is accelerating/decelerating*/
-      .acceleration_guage {
-        display: flex;
-        justify-content: left;
-        align-items: center;
+        position: relative;
+        width: 0;
+        height: 0;
       }
 
       /*circular guage to representation direction in which car is being steered (compass-like)*/
       .turn_guage {
-      }
-
-      .image {
-        max-width: 100%;
-        max-height: 100%;
-        user-select: none;
-        height: 360px;
-        width: 480px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        height: 50vh;
       }
     </style>
+
     <script src="Beaglebone_Controller.js" defer></script>
   </head>
   <body>
-    <canvas id="gaming zone"></canvas>
-
-    <div class="controller">
-      <img
-        height="50px"
-        width="50px;"
-        src="controller.jpeg"
-        alt="A generic
-      controller"
-        class="image"
-        draggable="false"
-      />
+    <div class="background">
+      <div class="acceleration_guage"></div>
     </div>
   </body>
 </html>
