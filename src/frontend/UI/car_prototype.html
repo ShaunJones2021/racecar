@@ -1,0 +1,238 @@
+<DOCTYPE html>
+  <html lang="en">
+    <!-- used chat GPT to model the direction pad and arrows for this program -->
+    <!-- used this video to learn buttons https://www.youtube.com/watch?v=G3e-cpL7ofc&ab_channel=SuperSimpleDev-->
+    <header>
+      <title>Super Cool Car GUI</title>
+      <link href="https://fonts.cdnfonts.com/css/arcade-classic" />
+      <style>
+        @import url("https://fonts.cdnfonts.com/css/arcade-classic");
+
+        /*background for the arrows*/
+        .direction-pad {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          margin-top: 20%;
+          margin-bottom: 8%;
+          margin-left: 75%;
+
+          border-radius: 50%;
+          width: 275px;
+          height: 275px;
+          border: 3px solid black;
+          background-color: black;
+          padding: 15px;
+
+          position: relative;
+          left: -30%;
+        }
+
+        /*left arrow*/
+        .left-arrow {
+          width: 0;
+          height: 0;
+          top: 30px;
+          left: -90px;
+
+          justify-content: center;
+          position: relative;
+          border-bottom: 30px solid transparent;
+          border-top: 30px solid transparent;
+          border-right: 30px solid white;
+        }
+
+        /*right arrow*/
+        .right-arrow {
+          width: 0;
+          height: 0;
+          bottom: 30px;
+          right: -90px;
+
+          justify-content: center;
+          position: relative;
+          border-bottom: 30px solid transparent;
+          border-top: 30px solid transparent;
+          border-left: 30px solid white;
+        }
+
+        /*up arrow*/
+        .up-arrow {
+          width: 0;
+          height: 0;
+          bottom: 10px;
+
+          justify-content: center;
+          position: relative;
+          border-left: 30px solid transparent;
+          border-right: 30px solid transparent;
+          border-bottom: 30px solid white;
+        }
+
+        /*down arrow*/
+        .down-arrow {
+          width: 0;
+          height: 0;
+          bottom: -10px;
+
+          justify-content: center;
+          position: relative;
+          border-left: 30px solid transparent;
+          border-right: 30px solid transparent;
+          border-top: 30px solid white;
+        }
+
+        /*circular button surrounding right arrow*/
+        .right-button {
+          background-color: transparent;
+
+          border: 2px solid yellow;
+          position: relative;
+
+          left: -65px;
+          bottom: 42px;
+          border-radius: 40px;
+          width: 80px;
+          height: 80px;
+          cursor: pointer;
+        }
+
+        /**/
+        .right-button:hover {
+          background-color: rgb(188, 188, 57);
+          opacity: 0.9;
+        }
+
+        /*circular button surrounding left arrow*/
+        .left-button {
+          background-color: transparent;
+
+          border: 2px solid yellow;
+          position: relative;
+
+          right: 20px;
+          bottom: 42px;
+          border-radius: 40px;
+          width: 80px;
+          height: 80px;
+          cursor: pointer;
+        }
+
+        .left-button:hover {
+          background-color: rgb(188, 188, 57);
+          opacity: 0.9;
+        }
+
+        .reverse-button {
+          background-color: transparent;
+
+          border: 2px solid yellow;
+          position: relative;
+          right: 42px;
+          bottom: 65px;
+          border-radius: 40px;
+          width: 80px;
+          height: 80px;
+          cursor: pointer;
+        }
+
+        .reverse-button:hover {
+          background-color: rgb(188, 188, 57);
+          opacity: 0.9;
+        }
+
+        .accelerate-button {
+          background-color: transparent;
+
+          border: 2px solid yellow;
+          position: relative;
+          right: 42px;
+          bottom: 20px;
+          border-radius: 40px;
+          width: 80px;
+          height: 80px;
+          cursor: pointer;
+        }
+
+        .accelerate-button:hover {
+          background-color: rgb(188, 188, 57);
+          opacity: 0.9;
+        }
+
+        .go-button {
+          color: white;
+          width: 100px;
+          height: 100px;
+          border-radius: 20px;
+          justify-content: center;
+          position: relative;
+          bottom: 50%;
+          left: 75%;
+
+          font-size: 150%;
+          font-family: "ArcadeClassic", sans-serif;
+          text-align: center;
+          cursor: pointer;
+
+          background-color: green;
+          border: 2px solid black;
+        }
+
+        .go-button:hover {
+          opacity: 0.75;
+        }
+
+        .go-button:active {
+          background-color: rgb(9, 228, 9);
+        }
+
+        .stop-button {
+          color: white;
+          width: 100px;
+          height: 100px;
+          border-radius: 20px;
+          justify-content: center;
+          position: relative;
+          bottom: 45%;
+          left: 75%;
+
+          font-size: 150%;
+          font-family: "ArcadeClassic", sans-serif;
+          text-align: center;
+          cursor: pointer;
+
+          background-color: rgb(202, 65, 65);
+          border: 2px solid black;
+        }
+
+        .stop-button:hover {
+          opacity: 0.75;
+        }
+
+        .stop-button:active {
+          background-color: rgb(251, 5, 5);
+        }
+      </style>
+    </header>
+    <div class="direction-pad">
+      <div class="up-arrow">
+        <div class="accelerate-button"></div>
+      </div>
+      <div class="left-arrow">
+        <div class="left-button"></div>
+      </div>
+      <div class="right-arrow">
+        <div class="right-button"></div>
+      </div>
+      <div class="down-arrow">
+        <div class="reverse-button"></div>
+      </div>
+    </div>
+
+    <div class="go-button">Go</div>
+    <div class="stop-button">Stop</div>
+    <body></body>
+  </html>
+</DOCTYPE>
