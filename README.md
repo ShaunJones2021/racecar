@@ -22,12 +22,15 @@ This is the git hub page for Group 5. Repository used to keep baseline for CS321
 The technology used in this project consists of the following:
 
 * Front-end:
-  * Javascript
+  * Javascript 
+    -gamepad API    
   * HTML
-  * (Maybe add the browser engine)
+  * Live Server
 * Backend:
   * Python
-    * {Add libraries used}
+    * version 3.10
+  * PIP - Package Manager
+  * flask
 * TBD(CI/CD)
   * Currently looking at automation software(Jenkins, Gitlab, etc.) .This is an extra credit and optional requirement listed in the project pdf. I have used this before and would like to personally set this up. Not needed but seems like a fun thing to have.
   
@@ -36,8 +39,8 @@ The technology used in this project consists of the following:
 ## Hardware
 
 The hardware used for this project consists of:
-* Beagle Bone Black/Blue
-* USB Controller: {BRAND/SPECS}
+* Beagle Bone Black
+* USB Controller: Xbox One Controller
 * RACE CAR MACHINE
 
 ---
@@ -50,3 +53,15 @@ THis will be a skeleton structure of the project. please feel free to add and re
 * src/backend
   *  Pretty much everything else will fall under here for now. It will have several sub-folder in the future.
 
+---
+
+## Miscellaneous
+
+* In-class network info:
+  * SSID: GL-A1300-97b
+  * Password: W3JZ7Q295M
+
+* SSH info:
+  * Host: 192.168.7.2 (may change next class if IP address is assigned dynamically)
+  * User: debian
+  * Default Password: temppwd
