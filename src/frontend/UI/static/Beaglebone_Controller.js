@@ -1,3 +1,28 @@
+// Network Connection
+var socket;
+function init_networking() {
+	socket = io.connect(null, {port: 5000, transports: ["websocket"], rememberTransport: false});
+	socket.on('connect', function() {
+		socket.emit('my event', {data: 'I\'m connected!'});
+		window.addEventListener("gamepadconnected", (event) => {
+
+			const controller = navigator.getGamepads()[event.gamepad.index]; //maintain a reference to controller
+
+			//get controller information and display it to console
+			console.log("Controller connected");
+			controllerIndex = event.gamepad.index; //keep track of where controller is in gamepad array
+    
+			gameLoop();    
+		});
+	});
+	socket.on("game_update", (arg) => {
+		console.log(arg); // "world"
+	});
+
+
+}
+
+
 let controllerIndex = null; //controller index in array of controllers
 let raceStarted = false; //true if program has received start signal from RM, false otherwise
 let raceFinished = false; //true if car has crossed finished line, false otherwises
@@ -8,19 +33,6 @@ const ANALOG_RANGE = 2.00;
 //variable to track analog positions from most recent animation frame
 let prev_analog_positions = null; 
 
-
-/* displays alert to the console when controller is connected
-or if controller is already connected when this page loads in browser*/
-window.addEventListener("gamepadconnected", (event) => {
-
-    const controller = navigator.getGamepads()[event.gamepad.index]; //maintain a reference to controller
-
-    //get controller information and display it to console
-    console.log("Controller connected");
-    controllerIndex = event.gamepad.index; //keep track of where controller is in gamepad array
-    
-    gameLoop();    
-});
 
 
 //TODO window.addEventListener for start signal from race management team
@@ -42,11 +54,8 @@ window.addEventListener("gamepaddisconnected", (event) => {
 //if >= 2% change -> return true
 function significantChanges(prev_analog_positions, current_axes){
 
-    left_changes = getPercentDifference(prev_analog_positions[0], current_axes[0]) >= 0.02 
-                    || getPercentDifference(prev_analog_positions[1], current_axes[1]) >= 0.02;
-
-    right_changes = getPercentDifference(prev_analog_positions[2], current_axes[2]) >= 0.02
-                    || getPercentDifference(prev_analog_positions[3], current_axes[3]) >= 0.02;
+    left_changes = getPercentDifference(prev_analog_positions[1], current_axes[1]) >= 0.10;
+    right_changes = getPercentDifference(prev_analog_positions[2], current_axes[2]) >= 0.10;
 
 
     if(left_changes && !right_changes)
@@ -113,32 +122,13 @@ function gameLoop() {
         /* check to see if there were any significant changes in analog sticks since
         last animation frame */
         var left_right = significantChanges(prev_analog_positions, current_axes);
+		
+		if (left_right) {
+			let js_ob = {"left": [current_axes[0], current_axes[1]], "right": [current_axes[2], current_axes[3]]};
+			socket.emit('input', js_ob);
+			prev_analog_positions = current_axes;
+		}
 
-        //if there are significant changes in analog positions, display update to screen
-        if(left_right == 1){
-
-            //package left analog stick data into json object
-            const jsonString = JSON.stringify("L:" + current_axes[0] + ", " + current_axes[1]);
-            console.log(jsonString);
-        }
-        else if(left_right == 2) {
-            
-            //package right analog stick data into json object
-            const jsonString = JSON.stringify("R:" + current_axes[2] + ", " + current_axes[3]); 
-            console.log(jsonString);
-        }
-        else if(left_right == 3){
-
-            //TODO package into a single json object
-            //package analog data into json objects
-            const jsonString1 = JSON.stringify("L:" + current_axes[0] + ", " + current_axes[1]); 
-            const jsonString2 = JSON.stringify("R:" + current_axes[2] + ", " + current_axes[3]); 
-            console.log(jsonString1);
-            console.log(jsonString2);
-        
-        }
-
-        prev_analog_positions = current_axes;
       //DISPLAY analog stick positions to the console
       //TODO use this loop to update controller interface, don't send information from here
       
@@ -147,3 +137,5 @@ function gameLoop() {
     /*tells page to update information being displayed*/
     requestAnimationFrame(gameLoop);
   }
+  
+init_networking();
