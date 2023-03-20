@@ -57,11 +57,13 @@ THis will be a skeleton structure of the project. please feel free to add and re
 
 ## Miscellaneous
 
-* In-class network info:
+* Connection info for Professor Pettit's provided wi-fi access point:
   * SSID: GL-A1300-97b
   * Password: W3JZ7Q295M
 
 * SSH info:
-  * Host: 192.168.7.2 (may change next class if IP address is assigned dynamically)
-  * User: debian
-  * Default Password: temppwd
+  * Host (if connecting via the above wi-fi acces point provided by the professor): 192.168.8.50
+  * Host (if connecting via USB connection): 192.168.7.2
+  * User name is one of the following based on our team members' names: baxter, ben_s, ben_t, chris, nick, scott, shaun
+  * Note that the username debian is disabled for security reasons so other teams are less likely to be able to access our BeagleBone
+  * Default Password (you will be asked to change this upon first login): temppwd
