@@ -1,8 +1,21 @@
 /* Credits:
  * -Used Chat GPT to assist with setting up gameloop 
  * -Used YouTube tutorials by Chris Courses to learn how to use Canvas
- * //TODO add Youtube Gamepad API video
+ * -Used Coding with Adam Youtube Channel to learn how to integrate Gamepad API with UI
 */
+
+
+//TODO
+//emergency brake button?
+//read and display speed(from nick's program)?
+//outline guages? (add border)
+//label guages? (acceleration and direction)
+//frame for video feed
+//VIDEO FEED
+//turbo animation? (extra)
+//music? (radio)
+//LIMIT BRAKING IF CAR IS TRAVELING AT HIGH SPEED!!! (gradual, fast braking will cause car to flip over)
+//finish animation (burning checker flag w/ flames, dmx playing, explosions (Michael Bay))
 
 
 /*VARIABLES RELATED TO CONTROLLER INPUT/COMMUNICATING WITH RACE MANAGEMENT*/
@@ -90,6 +103,7 @@ function updatePanel(){
     position_on_off();
 }
 
+/*positions the on_off button on screen and sets colors*/
 function position_on_off() {
 
     //position button above and between both guages
@@ -97,6 +111,7 @@ function position_on_off() {
     on_off_y = a_guage_y + - (a_guage_y * 0.25);
     on_off_radius = window.innerHeight/12;
 
+    //red if engine is on, green if engine is off
     if(!engine_on_off){
         c.strokeStyle = "darkred";
         c.fillStyle = "darkred";
@@ -118,6 +133,7 @@ function position_on_off() {
     c.fillStyle = "white";
     c.font = (on_off_radius*0.33).toString() + "px Trebuchet MS";
 
+    //display engine off if engine is off or engine on if engine on if engine is on
     if(!engine_on_off){
         c.fillText("Engine Off", on_off_x - (on_off_radius)/1.4, on_off_y + (on_off_radius/7));   
     }
@@ -203,6 +219,7 @@ function display_a_midpoint(){
     c.stroke(); //fill in line
 }
 
+/*display midpoint of directional guage*/
 function display_d_midpoint(){
 
     c.beginPath();
@@ -212,9 +229,7 @@ function display_d_midpoint(){
     c.strokeStyle = "white"; //set line color to light green
     c.lineWidth = 5; //make lines thick enough to see clearly
     c.stroke(); //fill in line
-
 }
-
 
 /* Adjusts position acceleration indicator within the acceleration
 * after a significant change is detected from the left analog stick.
@@ -338,14 +353,14 @@ function gameLoop() {
         if (left_right == 1) {
 
             //package left analog stick data into json object
-            const jsonString = JSON.stringify("L:" + current_axes[0] + ", " + current_axes[1]);
+            const jsonString = JSON.stringify("L:" + current_axes[1]);
             console.log(jsonString);
         }
 
         else if (left_right == 2) {
 
             //package right analog stick data into json object
-            const jsonString = JSON.stringify("R:" + current_axes[2] + ", " + current_axes[3]);
+            const jsonString = JSON.stringify("R:" + current_axes[2]);
             console.log(jsonString);
         }
 
@@ -353,10 +368,10 @@ function gameLoop() {
 
             //TODO package into a single json object
             //package analog data into json objects
-            const jsonString1 = JSON.stringify("L:" + current_axes[0] + ", " + current_axes[1]);
-            const jsonString2 = JSON.stringify("R:" + current_axes[2] + ", " + current_axes[3]);
+            const jsonString1 = JSON.stringify("L:" + current_axes[1] + " | R:" + current_axes[2]);
+     
             console.log(jsonString1);
-            console.log(jsonString2);
+    
         }
 
         left_stick_shift = getPercentDifference(current_axes[1], prev_analog_positions[1]);
