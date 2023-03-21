@@ -3,6 +3,14 @@ from flask import Flask, jsonify, send_from_directory, send_file, render_templat
 from flask_socketio import SocketIO
 from flask_socketio import send, emit
 import math
+import Adafruit_BBIO.PWM as PWM
+
+
+servoPin="P9_14"
+PWM.start(servoPin,0,50)
+
+MIDPOINT = 7.5
+RANGE = 5
    
 # static folder -> .js, imgs, stylesheets, etc
 # template folder -> strictly html
@@ -33,7 +41,7 @@ def test_disconnect():
     print('Client disconnected')
     
 @socketio.on('input')
-def game_action(data):
+def input_action(data):
     """
         for a given frame, input data is received and action is translated to beagleboard
     """
@@ -42,14 +50,16 @@ def game_action(data):
         # Get left and right analog stick values from client
         # left stick used to control speed
         # right stick used to control direction
-        left = float(data["left"][1])
-        right = float(data["right"][0])
+        left = -1 * float(data["left"][1])
+        right = -1 * float(data["right"][0])
         # Have some bias to look for 0 values
         if abs(left) < 0.15:
             left = 0.0
         if abs(right) < 0.10:
             right = 0.0
         print("left: {left_val:.2f}, right: {right_val:.2f}".format(left_val=left,right_val=right))
+        dutyCycle = (right*(RANGE/2)) + MIDPOINT
+        PWM.set_duty_cycle(servoPin,dutyCycle)
         # Do ADA LIBRARY stuff here using float inputs
    
     
@@ -59,4 +69,4 @@ def get_index():
 
 if __name__ == '__main__':
     #socketio.init_app(app, cors_allowed_origins="*")
-    socketio.run(app)
+    socketio.run(app, host="0.0.0.0")
