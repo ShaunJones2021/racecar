@@ -11,18 +11,35 @@
         border: 1px solid black;
         background-color: rgb(180, 173, 173);
         display: flex;
-        position: relative;
+        justify-content: right;
+        margin-left: 33%;
       }
 
       /*makes canvas hug tab borders, adjusting margin will leave whitespace in between canvas and bounds of tab*/
       body {
         margin: 0;
       }
+
+      .video_feed {
+        position: absolute;
+        display: flex;
+        margin-left: 5%;
+        margin-top: 5%;
+      }
     </style>
   </head>
   <body>
-    <canvas>
-      <script src="index.js"></script>
-    </canvas>
+    <div class="video_feed">
+      <image id="video" width="320" height="240" src="controller.jpeg"> </image>
+    </div>
+    <div>
+      <canvas>
+        <script src="index.js"></script>
+      </canvas>
+    </div>
+    <!-- <script>
+      document.getElementById("video").controls = false;
+      document.getElementById("video").load();
+    </script> -->
   </body>
 </html>

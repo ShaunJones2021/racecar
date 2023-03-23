@@ -5,12 +5,15 @@
 */
 
 
+//TODO replace all ((window.innerWidth * 0.67)) -> (window.innerWidth * 0.67)
+
 //TODO
-//emergency brake button?
+//REQUEST ANIMATION FRAME LESS FREQUENTLY
+//EMERGENCY BRAKE
 //read and display speed(from nick's program)?
-//outline guages? (add border)
-//label guages? (acceleration and direction)
-//frame for video feed
+//OUTLINE GUAGES (add border)
+//LABEL GUAGES (acceleration and direction, add border) 
+//FRAME FOR VIDEO FEED
 //VIDEO FEED
 //turbo animation? (extra)
 //music? (radio)
@@ -27,6 +30,7 @@ var first_frame = true; //true if gameloop is in first frames
 var left_stick_shift, right_stick_shift = 0; //variables representing x shift for left analog, y shift for right analog
 const ANALOG_RANGE = 2.00; //constant representing range of possible values for an analog stick
 var prev_analog_positions = null; //variable to track analog positions from most recent animation frame
+const stop = true;
 
 
 /*VARIABLES FOR POSITIONING CANVAS ELEMENTS*/
@@ -48,8 +52,6 @@ var canvas = document.querySelector('canvas'); //stores information about canvas
 /* stands for context, helps us resize/reposition canvas (super objects)
 * BASIC PREMISE: Making SuperObject! -> taking a lot of methods/functions to implement a dynamic panel to draw shapes (2d) on*/
 var c = canvas.getContext('2d');
-
-
 
 /*--------------------------------------------------CODE THAT DOES STUFF--------------------------------------------------------------*/
 
@@ -79,8 +81,21 @@ window.addEventListener("gamepadconnected", (event) => {
     //keep track of where controller is in gamepad array
     controllerIndex = event.gamepad.index;
 
+    updatePanel(); 
+
     //call gameLoop function to begin reading controller analog stick input
     gameLoop();
+});
+
+
+/* displays alert to the console when controller is disconnected*/
+window.addEventListener("gamepaddisconnected", (event) => {
+
+    console.log("Controller disconnected");
+    controllerIndex = null; //indicates controller is no longer active
+    engine_on_off = false;
+    updatePanel();
+    //TODO send json object telling python program to stop car ("STOP")
 });
 
 
@@ -94,22 +109,57 @@ window.addEventListener("gamepadconnected", (event) => {
 function updatePanel(){
 
     //makes canvas fill entire screen (can create variables to store and update inside gameloop) 
-    canvas.width = window.innerWidth;
+    canvas.width = (window.innerWidth * 0.67);
     canvas.height = window.innerHeight;
     position_a_guage();
+    outline_guage(a_guage_x, a_guage_y, a_guage_width, a_guage_height);
     position_d_guage();
+    outline_guage(d_guage_x, d_guage_y, d_guage_width, d_guage_height);
     display_a_midpoint();
     display_d_midpoint();
     position_on_off();
 }
+
+/*draws border around a guage*/
+function outline_guage(x, y, width, height)
+{
+ 
+    //border is 2% of canvas.innerWidth
+        
+    c.fillStyle = "darkblue";
+    //c.fillStyle = "black";
+    c.fillRect(get_outline_x(x), get_outline_y(y), get_outline_width(width), get_outline_height(height));
+   
+}
+
+function get_outline_x(x){
+    return x+(0.005 * window.innerWidth);
+}
+
+function get_outline_y(y){
+    return y+(0.005 * window.innerWidth);
+}
+
+function get_outline_width(width){
+
+    return width- (0.01 * window.innerWidth);
+}
+
+function get_outline_height(height){
+
+    return height- (0.01 * window.innerWidth);
+}
+
+
 
 /*positions the on_off button on screen and sets colors*/
 function position_on_off() {
 
     //position button above and between both guages
     on_off_x = d_guage_x; 
-    on_off_y = a_guage_y + - (a_guage_y * 0.25);
-    on_off_radius = window.innerHeight/12;
+    on_off_radius = window.innerWidth/20;
+    on_off_y = a_guage_y - on_off_radius * 1.25;
+    
 
     //red if engine is on, green if engine is off
     if(!engine_on_off){
@@ -146,14 +196,19 @@ function position_on_off() {
 /*positions acceleration guage within canvas*/
 function position_a_guage() {
 
-    a_guage_x = window.innerWidth/2;
-    a_guage_y = window.innerHeight/2.25;
+    a_guage_x = (window.innerWidth * 0.67)/4;
+    //a_guage_y = window.innerHeight/2.25;
+    a_guage_y = window.innerWidth * 0.175;
 
     //1:3 rectangle
-    a_guage_width = window.innerHeight * 0.15;
-    a_guage_height = window.innerHeight * 0.45; 
+    //a_guage_width = window.innerHeight * 0.15;
+    //a_guage_height = window.innerHeight * 0.45; 
+    a_guage_width = window.innerWidth * 0.10;
+    a_guage_height = window.innerWidth * 0.30;
 
-    c.fillStyle = "black";
+    //TODO set color to white
+    c.fillStyle = "white";
+    //c.fillStyle = "black";
     c.fillRect(a_guage_x, a_guage_y, a_guage_width, a_guage_height);
 }
 
@@ -161,16 +216,18 @@ function position_a_guage() {
 function position_d_guage() {
 
     //position directional guage next to acceleration guage with seperating whitespace
-    d_guage_x = a_guage_x + (window.innerHeight * 0.175);
+    d_guage_x = a_guage_x + (window.innerWidth * 0.125);
 
     //position directional gauge perpendicular to acceleration guage
-    d_guage_y = a_guage_y + (window.innerHeight * 0.3);
+    d_guage_y = a_guage_y + (window.innerWidth * 0.2);
 
     //3:1 rectangle
-    d_guage_width = window.innerHeight * 0.45;
-    d_guage_height = window.innerHeight * 0.15; 
+    d_guage_width = window.innerWidth * 0.30;
+    d_guage_height = window.innerWidth * 0.10; 
 
-    c.fillStyle = "black";
+    //TODO set color to white
+    c.fillStyle = "white";
+    //c.fillStyle = "black";
     c.fillRect(d_guage_x, d_guage_y, d_guage_width, d_guage_height);
 }
 
@@ -192,16 +249,16 @@ function position_a_indicator(shift, y){
     a_ind_y += (shift * a_guage_height); 
      
     //if(y< upperbound) -> keep the bar at the top pos
-    if(a_ind_y <= a_guage_y) {
-        a_ind_y = a_guage_y;
+    if(a_ind_y <= get_outline_y(a_guage_y)) {
+        a_ind_y = get_outline_y(a_guage_y) + 2.5;
     }
     //else if(y> lowerbound)-> keep the bar at the bottom pos
-    else if(a_ind_y >= a_guage_y + a_guage_height){
-        a_ind_y = a_guage_y + (a_guage_height);
+    else if(a_ind_y >= get_outline_y(a_guage_y) + get_outline_height(a_guage_height)){
+        a_ind_y = get_outline_y(a_guage_y) + get_outline_height(a_guage_height) - 2.5;
     }
    
-    c.moveTo(a_guage_x, a_ind_y); //where line starts (FIXME a_gauge MIDPOINT)
-    c.lineTo(a_guage_x + a_guage_width, a_ind_y); //where line ends (FIXME a_guage MIDPOINT)
+    c.moveTo(get_outline_x(a_guage_x), a_ind_y); //where line starts (FIXME a_gauge MIDPOINT)
+    c.lineTo(get_outline_x(a_guage_x) + get_outline_width(a_guage_width), a_ind_y); //where line ends (FIXME a_guage MIDPOINT)
     c.strokeStyle = "lightgreen"; //set line color to light green
     c.lineWidth = 5; //make lines thick enough to see clearly
     c.stroke(); //fill in line
@@ -212,8 +269,8 @@ function display_a_midpoint(){
 
     c.beginPath();
     a_mid = a_guage_y + (a_guage_height/2);
-    c.moveTo(a_guage_x, a_mid); //where line starts (FIXME a_gauge MIDPOINT)
-    c.lineTo(a_guage_x + a_guage_width, a_mid); //where line ends (FIXME a_guage MIDPOINT)
+    c.moveTo(get_outline_x(a_guage_x), a_mid); //where line starts (FIXME a_gauge MIDPOINT)
+    c.lineTo(get_outline_x(a_guage_x) + get_outline_width(a_guage_width), a_mid); //where line ends (FIXME a_guage MIDPOINT)
     c.strokeStyle = "white"; //set line color to light green
     c.lineWidth = 5; //make lines thick enough to see clearly
     c.stroke(); //fill in line
@@ -224,8 +281,8 @@ function display_d_midpoint(){
 
     c.beginPath();
     d_mid = d_guage_x + (d_guage_width/2); 
-    c.moveTo(d_mid, d_guage_y); //where line starts (FIXME a_gauge MIDPOINT)
-    c.lineTo(d_mid, d_guage_y + d_guage_height); //where line ends (FIXME a_guage MIDPOINT)
+    c.moveTo(d_mid, get_outline_y(d_guage_y)); //where line starts (FIXME a_gauge MIDPOINT)
+    c.lineTo(d_mid, get_outline_y(d_guage_y) + get_outline_height(d_guage_height)); //where line ends (FIXME a_guage MIDPOINT)
     c.strokeStyle = "white"; //set line color to light green
     c.lineWidth = 5; //make lines thick enough to see clearly
     c.stroke(); //fill in line
@@ -247,31 +304,22 @@ function position_d_indicator(shift, x){
     d_ind_x += (shift * d_guage_width); 
      
     //if(x > upperbound) -> keep indicator at the right
-    if(d_ind_x >= d_guage_x + d_guage_width) {
-        d_ind_x = d_guage_x + d_guage_width;
+    if(d_ind_x >= get_outline_x(d_guage_x) + get_outline_width(d_guage_width)) {
+        d_ind_x = get_outline_x(d_guage_x) + get_outline_width(d_guage_width) -2.5;
     }
     //else if(x < lowerbound)-> keep the bar at the bottom pos
-    else if(d_ind_x <= d_guage_x){
-        d_ind_x = d_guage_x;
+    else if(d_ind_x <= get_outline_x(d_guage_x)){
+        d_ind_x = get_outline_x(d_guage_x)+2.5;
     }
    
-    c.moveTo(d_ind_x, d_guage_y); //where line starts (FIXME a_gauge MIDPOINT)
-    c.lineTo(d_ind_x, d_guage_y + d_guage_height); //where line ends (FIXME a_guage MIDPOINT)
+    c.moveTo(d_ind_x, get_outline_y(d_guage_y)); //where line starts (FIXME a_gauge MIDPOINT)
+    c.lineTo(d_ind_x, get_outline_y(d_guage_y) + get_outline_height(d_guage_height)); //where line ends (FIXME a_guage MIDPOINT)
     c.strokeStyle = "lightgreen"; //set line color to light green
     c.lineWidth = 5; //make lines thick enough to see clearly
     c.stroke(); //draw line
 }
 
 
-/* displays alert to the console when controller is disconnected*/
-window.addEventListener("gamepaddisconnected", (event) => {
-
-    console.log("Controller disconnected");
-    controllerIndex = null; //indicates controller is no longer active
-    engine_on_off = false;
-
-    //TODO send json object telling python program to stop car ("STOP")
-});
 
 
 //if < 10% change in analog stick -> return false
@@ -324,17 +372,18 @@ function center_d_ind(){
 and sending information to other programs.  Used ChatGpt assist with setting up gameloop*/
 function gameLoop() {
 
-    //we are ssuming only one gamepad is connected to the computer
-    const game = navigator.getGamepads()[controllerIndex];
-
-    //update context
-    c = canvas.getContext('2d');
-
-    //update guage positions
-    updatePanel();
     
-    //if the controller is connected
+    //if the controller is connected animation frame is a multiple of 3
     if (controllerIndex != null) {
+
+        //we are assuming only one gamepad is connected to the computer
+        const game = navigator.getGamepads()[controllerIndex];
+
+        //update context
+        c = canvas.getContext('2d');
+
+        //update guage positions
+        updatePanel();
 
         //read initial input
         if (first_frame) {
@@ -366,10 +415,8 @@ function gameLoop() {
 
         else if (left_right == 3) {
 
-            //TODO package into a single json object
             //package analog data into json objects
             const jsonString1 = JSON.stringify("L:" + current_axes[1] + " | R:" + current_axes[2]);
-     
             console.log(jsonString1);
     
         }
@@ -381,12 +428,9 @@ function gameLoop() {
         position_d_indicator(right_stick_shift, current_axes[2]); 
 
         //update prev stick positions
-        prev_analog_positions = current_axes;
-
-        //DISPLAY analog stick positions to the console
-        //TODO use this loop to update controller interface, don't send information from here
+        prev_analog_positions = current_axes;       
     }
 
-    /*tells page to update information being displayed*/
     requestAnimationFrame(gameLoop);
+   
 }
