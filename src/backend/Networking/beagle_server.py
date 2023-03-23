@@ -8,6 +8,8 @@ import Adafruit_BBIO.PWM as PWM
 
 servoPin="P9_14"
 PWM.start(servoPin,0,50)
+servoPin2="P9_16"
+PWM.start(servoPin,0,50)
 
 MIDPOINT = 7.5
 RANGE = 5
@@ -58,8 +60,13 @@ def input_action(data):
         if abs(right) < 0.10:
             right = 0.0
         print("left: {left_val:.2f}, right: {right_val:.2f}".format(left_val=left,right_val=right))
+        # Controls the steering servo 
         dutyCycle = (right*(RANGE/2)) + MIDPOINT
         PWM.set_duty_cycle(servoPin,dutyCycle)
+
+        # Controls the throttle
+        dutyCycle2 = (left*(RANGE/2)) + MIDPOINT
+        PWM.set_duty_cycle(servoPin2,dutyCycle2)
         # Do ADA LIBRARY stuff here using float inputs
    
     
