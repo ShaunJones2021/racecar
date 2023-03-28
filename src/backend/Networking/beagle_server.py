@@ -9,7 +9,7 @@ import Adafruit_BBIO.PWM as PWM
 servoPin="P9_14"
 PWM.start(servoPin,0,50)
 servoPin2="P9_16"
-PWM.start(servoPin,0,50)
+PWM.start(servoPin2,0,50)
 
 MIDPOINT = 7.5
 RANGE = 5
