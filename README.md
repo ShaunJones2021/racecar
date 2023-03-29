@@ -55,6 +55,36 @@ THis will be a skeleton structure of the project. please feel free to add and re
 
 ---
 
+Class Diagram:
+
+
+```mermaid
+classDiagram
+  direction RL;
+    beagle_server<|-- cam_server
+    beagleBone_controller<|--|> beagle_server
+    RM <|-- cam_server
+
+    class beagleBone_controller{
+      window.addEventListener()
+      significantChanges()
+      getPercentDifference()
+      gameLoop()
+    }
+
+    class beagle_server {
+      static_dir()
+      input_action()
+      get_index()
+    }
+
+    class cam_server{
+      gen_frames()
+      video_feed()
+    }
+```
+---
+
 ## Miscellaneous
 
 * Connection info for Professor Pettit's provided wi-fi access point:
