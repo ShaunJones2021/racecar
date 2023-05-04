@@ -83,8 +83,16 @@ classDiagram
       video_feed()
     }
 ```
----
+## Running the Software and Connecting to the Server
+1. SSH into two sessions on the Beagle Board you wish to run this software from.
+2. On the first SSH session, clone this repo to the location of your choosing and then navigate into the `racecar/src/backend/Networking/` directory
+3. From there, execute the following command: `python3 beagle_server.py`. This will start up the web server on port 5000 that a user can connect to in order to control the racecar.
+4. In the second SSH session, execute the following command: `ffmpeg -c:v mjpeg -s 640x360 -i /dev/video0 -c:v copy -tune zerolatency -muxdelay 0.1 -g 0 -f mjpeg udp://RACE_IP:33113`. This will start the video stream.
+5. On a computer on the same network as the beagle board, use a web browser to navigate to the IP address of the beagle board at port 5000. We set our beagle board to have the static IP address of 192.168.8.50, so our connection string looked like: http://192.168.8.50:5000
+6. Upon plugging in a controller to the now-connected computer and the beagle board receiving a start signal from Race Management, you should be able to control the racecar with joystick inputs until such time as Race Management sends the race stop signal.
+7. The software can be killed in the two SSH sessions with the typical Control-C key press on the keyboard.
 
+---
 ## Miscellaneous
 
 * Connection info for Professor Pettit's provided wi-fi access point:
